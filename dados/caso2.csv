@@ -1,0 +1,5 @@
+# Caso 2 - dados com sobreposição/ruído.
+# Objetivo: cerca de 8 a 10 pontos, com as classes parcialmente misturadas.
+# Esperado: acurácia menor que 100% e pelo menos um ponto sobre a reta.
+# Formato: x1,x2,classe (+1 = classe A, -1 = classe B)
+x1,x2,classe

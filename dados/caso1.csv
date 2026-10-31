@@ -1,0 +1,5 @@
+# Caso 1 - dados bem separáveis.
+# Objetivo: cerca de 8 a 10 pontos formando duas nuvens claramente distintas.
+# Esperado: acurácia de treino de 100% e reta passando entre as nuvens.
+# Formato: x1,x2,classe (+1 = classe A, -1 = classe B)
+x1,x2,classe

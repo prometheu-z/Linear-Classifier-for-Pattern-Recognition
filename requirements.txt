@@ -1,0 +1,5 @@
+# Requisitos do projeto
+# Apenas o matplotlib é usado, exclusivamente para o gráfico.
+# Toda a álgebra linear deve ser implementada manualmente em src/matriz.py
+# e src/solver.py, sem numpy.linalg/sklearn/scipy.
+matplotlib>=3.7

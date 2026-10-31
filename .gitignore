@@ -1,0 +1,25 @@
+# Bytecode e cache do Python
+__pycache__/
+*.py[cod]
+*.pyd
+.Python
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Configurações de editores/IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Saídas geradas pelo programa
+grafico_*.png
+
+# Relatório final (não versionar rascunhos; o PDF final deve ser commitado)
+relatorio/*.aux
+relatorio/*.log
+relatorio/*.out
+relatorio/*.toc
