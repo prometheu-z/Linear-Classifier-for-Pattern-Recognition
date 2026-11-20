@@ -1,7 +1,10 @@
 # Pasta do relatório
 
-Coloque aqui o relatório final em PDF, com o nome `relatorio.pdf`, conforme
-a estrutura pedida no enunciado:
+O relatório final em PDF fica em `relatorio.pdf`. Ele pode ser regenerado com:
+
+```bash
+python relatorio/gerar_relatorio.py
+```
 
 1. Capa
 2. Introdução e objetivo

@@ -18,6 +18,18 @@ Regra de classificação:
 Todos os métodos estão apenas definidos (assinatura + contrato).
 """
 
+import sys
+import os
+import math
+
+PASTA_SRC = os.path.dirname(os.path.abspath(__file__))
+if PASTA_SRC not in sys.path:
+    sys.path.insert(0, PASTA_SRC)
+
+import matriz
+import solver
+import dados
+
 # Nomes amigáveis previstos para apresentação dos resultados.
 NOMES_CLASSES = {
     1: "Classe A (+1)",
@@ -39,9 +51,8 @@ def montar_X(pontos):
 
     TODO: implementar.
     """
-    raise NotImplementedError(
-        "TODO: implementar classificador.montar_X(pontos)."
-    )
+    dados.validar_pontos(pontos)
+    return [[float(ponto[0]), float(ponto[1]), 1.0] for ponto in pontos]
 
 
 def treinar(pontos, rotulos):
@@ -56,9 +67,18 @@ def treinar(pontos, rotulos):
 
     TODO: implementar.
     """
-    raise NotImplementedError(
-        "TODO: implementar classificador.treinar(pontos, rotulos)."
-    )
+    dados.validar_pontos(pontos, rotulos)
+    if len(pontos) < 3:
+        raise ValueError("São necessários pelo menos três pontos para o treino.")
+    X = montar_X(pontos)
+    XT = matriz.transposta(X)
+    A = matriz.multiplicar(XT, X)
+    y = [float(rotulo) for rotulo in rotulos]
+    b = matriz.matriz_vetor(XT, y)
+    w, _ = solver.resolver_sistema(A, b)
+    if matriz.norma(w[:2]) <= 1e-12:
+        raise ValueError("Os pesos calculados não definem uma reta.")
+    return w
 
 
 def decisao(w, ponto):
@@ -71,9 +91,10 @@ def decisao(w, ponto):
 
     TODO: implementar.
     """
-    raise NotImplementedError(
-        "TODO: implementar classificador.decisao(w, ponto)."
-    )
+    if not isinstance(w, (list, tuple)) or len(w) != 3:
+        raise ValueError("w deve conter três pesos: w1, w2 e w0.")
+    dados.validar_pontos([ponto])
+    return float(w[0]) * float(ponto[0]) + float(w[1]) * float(ponto[1]) + float(w[2])
 
 
 def classificar(w, ponto):
@@ -87,9 +108,9 @@ def classificar(w, ponto):
 
     TODO: implementar.
     """
-    raise NotImplementedError(
-        "TODO: implementar classificador.classificar(w, ponto)."
-    )
+    score = decisao(w, ponto)
+    rotulo = 1 if score >= -TOLERANCIA_DECISAO else -1
+    return rotulo, NOMES_CLASSES[rotulo]
 
 
 def acuracia(w, pontos, rotulos):
@@ -102,9 +123,12 @@ def acuracia(w, pontos, rotulos):
 
     TODO: implementar.
     """
-    raise NotImplementedError(
-        "TODO: implementar classificador.acuracia(w, pontos, rotulos)."
-    )
+    dados.validar_pontos(pontos, rotulos)
+    if not pontos:
+        raise ValueError("O conjunto para avaliação não pode estar vazio.")
+    acertos = sum(classificar(w, ponto)[0] == rotulo
+                  for ponto, rotulo in zip(pontos, rotulos))
+    return 100.0 * acertos / len(pontos)
 
 
 def distancia_reta(w, ponto):
@@ -117,9 +141,10 @@ def distancia_reta(w, ponto):
 
     TODO: implementar.
     """
-    raise NotImplementedError(
-        "TODO: implementar classificador.distancia_reta(w, ponto)."
-    )
+    norma_normal = matriz.norma([float(w[0]), float(w[1])])
+    if norma_normal <= 1e-12:
+        raise ValueError("A reta é indefinida: w1 e w2 são nulos.")
+    return decisao(w, ponto) / norma_normal
 
 
 def equacao_reta(w):
@@ -131,8 +156,10 @@ def equacao_reta(w):
 
     TODO: implementar.
     """
-    raise NotImplementedError(
-        "TODO: implementar classificador.equacao_reta(w)."
+    if matriz.norma([float(w[0]), float(w[1])]) <= 1e-12:
+        raise ValueError("Reta indefinida: w1 e w2 são nulos.")
+    return "f(x) = {:+.6f}*x1 {:+.6f}*x2 {:+.6f} = 0".format(
+        float(w[0]), float(w[1]), float(w[2])
     )
 
 
@@ -146,6 +173,49 @@ def coordenada_x2(w, x1):
 
     TODO: implementar.
     """
-    raise NotImplementedError(
-        "TODO: implementar classificador.coordenada_x2(w, x1)."
-    )
+    if abs(float(w[1])) <= 1e-12:
+        raise ValueError("A reta é vertical: w2 é aproximadamente nulo.")
+    return -(float(w[0]) * float(x1) + float(w[2])) / float(w[1])
+def projetar_na_reta(w, ponto):
+    """Projeta ortogonalmente o ponto sobre a reta separadora."""
+    normal = [float(w[0]), float(w[1])]
+    n_hat = matriz.versor(normal)
+    distancia = distancia_reta(w, ponto)
+    return [float(ponto[0]) - distancia * n_hat[0],
+            float(ponto[1]) - distancia * n_hat[1]]
+
+
+def avaliar_modelo(w, pontos, rotulos):
+    """Calcula confusão, métricas, resíduos e índices classificados incorretamente."""
+    dados.validar_pontos(pontos, rotulos)
+    vp = vn = fp = fn = 0
+    errados = []
+    for indice, (ponto, esperado) in enumerate(zip(pontos, rotulos)):
+        previsto = classificar(w, ponto)[0]
+        if previsto == 1 and esperado == 1:
+            vp += 1
+        elif previsto == -1 and esperado == -1:
+            vn += 1
+        elif previsto == 1 and esperado == -1:
+            fp += 1
+        else:
+            fn += 1
+        if previsto != esperado:
+            errados.append(indice)
+    total = len(pontos)
+    acuracia_valor = 100.0 * (vp + vn) / total
+    precisao = 100.0 * vp / (vp + fp) if vp + fp else 0.0
+    recall = 100.0 * vp / (vp + fn) if vp + fn else 0.0
+    residuos = [float(rotulo) - decisao(w, ponto)
+                for ponto, rotulo in zip(pontos, rotulos)]
+    sse = sum(residuo * residuo for residuo in residuos)
+    rmse = math.sqrt(sse / total)
+    return {
+        "acuracia": acuracia_valor,
+        "precisao": precisao,
+        "recall": recall,
+        "matriz_confusao": {"VP": vp, "VN": vn, "FP": fp, "FN": fn},
+        "sse": sse,
+        "rmse": rmse,
+        "indices_errados": errados,
+    }

@@ -10,10 +10,7 @@ Com a reta calculada, novos pontos poderão ser classificados automaticamente pe
 
 Toda a parte de álgebra linear (transposta, multiplicação de matrizes, produto interno e resolução de sistemas lineares) será implementada manualmente, sem usar pacotes que resolvam o problema diretamente.
 
-> **Status atual: esqueleto (scaffold).**
-> A arquitetura de pastas e os contratos das funções estão definidos, mas
-> os métodos ainda **não foram implementados**. As funções levantem
-> `NotImplementedError` com um `TODO` indicando o que falta.
+> **Status atual: implementação concluída e validada por testes automáticos.**
 
 ## Integrantes
 
