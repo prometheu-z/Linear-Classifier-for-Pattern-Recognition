@@ -119,13 +119,13 @@ Por padrão, o gráfico será salvo em `grafico_resultado.png`.
 
 ## Próximos passos
 
-- [ ] Definir os datasets `caso1.csv` e `caso2.csv`.
-- [ ] Implementar `src/matriz.py` e `src/solver.py`.
-- [ ] Implementar `src/classificador.py` e validar o Caso 1 à mão.
-- [ ] Implementar `src/dados.py`, `src/grafico.py` e `src/main.py`.
-- [ ] Preencher `testes/executar_testes.py` com os valores esperados.
-- [ ] Redigir o relatório e salvar em `relatorio/relatorio.pdf`.
-- [ ] Revisar o checklist final do documento de requisitos.
+- [ X ] Definir os datasets `caso1.csv` e `caso2.csv`.
+- [ X ] Implementar `src/matriz.py` e `src/solver.py`.
+- [ X ] Implementar `src/classificador.py` e validar o Caso 1 à mão.
+- [ X ] Implementar `src/dados.py`, `src/grafico.py` e `src/main.py`.
+- [ X ] Preencher `testes/executar_testes.py` com os valores esperados.
+- [  ] Redigir o relatório e salvar em `relatorio/relatorio.pdf`.
+- [  ] Revisar o checklist final do documento de requisitos.
 
 ## Relatório
 
