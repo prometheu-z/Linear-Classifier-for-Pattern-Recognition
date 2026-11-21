@@ -129,6 +129,4 @@ Por padrão, o gráfico será salvo em `grafico_resultado.png`.
 
 ## Relatório
 
-O PDF final deve ser colocado em `relatorio/relatorio.pdf`. A estrutura
-sugerida está em `relatorio/LEIA-ME.md`, conforme a seção 4.6 do documento
-de requisitos.
+O PDF final está em `relatorio/relatorio.pdf`. Uma documentação teórica e fundamentada sobre este projeto.
