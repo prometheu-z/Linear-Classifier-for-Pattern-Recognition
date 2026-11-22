@@ -26,7 +26,6 @@ vetores/
 ├── requirements.txt           # única dependência: matplotlib (gráfico)
 ├── .gitignore
 ├── relatorio/
-│   ├── LEIA-ME.md             # orientação do que deve ir no PDF
 │   └── relatorio.pdf          # (a adicionar) relatório final
 ├── src/
 │   ├── matriz.py              # [esqueleto] transposta, produtos, norma
@@ -124,8 +123,8 @@ Por padrão, o gráfico será salvo em `grafico_resultado.png`.
 - [ X ] Implementar `src/classificador.py` e validar o Caso 1 à mão.
 - [ X ] Implementar `src/dados.py`, `src/grafico.py` e `src/main.py`.
 - [ X ] Preencher `testes/executar_testes.py` com os valores esperados.
-- [  ] Redigir o relatório e salvar em `relatorio/relatorio.pdf`.
-- [  ] Revisar o checklist final do documento de requisitos.
+- [ X ] Redigir o relatório e salvar em `relatorio/relatorio.pdf`.
+- [ X ] Revisar o checklist final do documento de requisitos.
 
 ## Relatório
 
