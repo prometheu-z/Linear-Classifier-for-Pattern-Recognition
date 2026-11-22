@@ -121,8 +121,10 @@ def main():
     """Executa todos os testes e imprime um resumo."""
     total = 0
     todas_falhas = []
+    print("\nEXECUCAO DOS TESTES")
+    print("===================\n")
     for nome, funcao in (
-        ("Álgebra linear", testar_algebra_linear),
+        ("Algebra linear", testar_algebra_linear),
         ("Caso 1", testar_caso1),
         ("Caso 2", testar_caso2),
     ):
@@ -130,14 +132,18 @@ def main():
             quantidade, falhas = funcao()
             total += quantidade
             todas_falhas.extend(falhas)
-            print("{}: {} verificacoes, {} falhas".format(
-                nome, quantidade, len(falhas)))
+            status = "[ OK ]" if not falhas else "[ FALHA ]"
+            print("{:<18} {}  {} verificacoes, {} falhas".format(
+                nome, status, quantidade, len(falhas)))
         except Exception as erro:
             total += 1
             todas_falhas.append("{} lançou exceção: {}".format(nome, erro))
-    print("Resumo: {} verificacoes, {} falhas".format(total, len(todas_falhas)))
+            print("{:<18} [ ERRO ]  excecao: {}".format(nome, erro))
+    print("\nRESUMO")
+    print("------")
+    print("{} verificacoes | {} falhas".format(total, len(todas_falhas)))
     for falha in todas_falhas:
-        print("ERRO:", falha)
+        print("[ ERRO ] {}".format(falha))
     return 0 if not todas_falhas else 1
 
 
